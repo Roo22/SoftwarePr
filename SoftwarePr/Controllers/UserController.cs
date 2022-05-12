@@ -1,4 +1,5 @@
-﻿using SoftwarePr.Models;
+﻿using SoftwarePr.InterFaces;
+using SoftwarePr.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,10 @@ using System.Web.Mvc;
 
 namespace SoftwarePr.Controllers
 {
-    public class UserController : Controller
+    public class UserController : Controller,IRedirectControllers, IRedirectUserControllers, ILogOut
     {
         ApplicationDbContext db = new ApplicationDbContext();
+        DataBase Data = new DataBase();
 
         // GET: User
         public ActionResult Index()
@@ -62,21 +64,17 @@ namespace SoftwarePr.Controllers
             ViewBag.Message = "Email Already Registered. Please Try Again With Another Email";
             return View();
         }
-        public void SaveSignUpData(SignupLogin signup)
-        {
-            db.SignupLogin.Add(signup);
-            db.SaveChanges();
-        }
+       
         public ActionResult IfModelValid(SignupLogin signup)
         {
-            var isEmailAlreadyExists = db.SignupLogin.Any(x => x.Email == signup.Email);
+            var isEmailAlreadyExists = Data.GetUserEmail(signup);
             if (isEmailAlreadyExists)
             {
                 return IfEmailExists();
             }
             else
             {
-                SaveSignUpData(signup);
+                Data.SaveSignUpData(signup);
                 return RedirectToAction("Index", "Products");
             }
         }
@@ -90,14 +88,10 @@ namespace SoftwarePr.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(SignupLogin model)
         {
-            var data = GetUserData(model);
+            var data = Data.GetUserData(model);
             return CheckData(data);
         }
-        public IEnumerable<SignupLogin> GetUserData(SignupLogin model)
-        {
-            var data = db.SignupLogin.Where(s => s.Email.Equals(model.Email) && s.Password.Equals(model.Password)).ToList();
-            return data;
-        }
+       
         public ActionResult CheckData(IEnumerable<SignupLogin> data)
         {
             if (data.Count() > 0)
@@ -134,6 +128,6 @@ namespace SoftwarePr.Controllers
             return RedirectToAction("Login");
         }
 
-
+      
     }
 }

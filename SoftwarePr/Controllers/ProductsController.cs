@@ -1,4 +1,5 @@
-﻿using SoftwarePr.Models;
+﻿using SoftwarePr.InterFaces;
+using SoftwarePr.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,43 +10,32 @@ using System.Web.Mvc;
 
 namespace SoftwarePr.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductsController : Controller, IRedirectControllers
     {
         ApplicationDbContext db = new ApplicationDbContext();
+        DataBase Data = new DataBase();
         // GET: Products
-        public IEnumerable<Products> GetProducts()
-        {
-            var products = db.Products.ToList<Products>();
-            return products;
-        }
+       
         public ActionResult Index()
         {
-            var products = GetProducts();
+            var products = Data.GetProductsData();
             return View(products);
 
         }
         public ActionResult Details(int id)
         {
-            Products products = FindProductId(id);
+            Products products = Data.FindProductId(id);
             return View(products);
         }
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            Products products = FindProductId(id);
-            RemoveProductsData(products);
+            Products products = Data.FindProductId(id);
+            Data.RemoveProductsData(products);
             return RedirectToAction("Index", "Admin");
         }
-        public Products FindProductId(int id)
-        {
-            Products products = db.Products.Find(id);
-            return products;
-        }
-        public void RemoveProductsData(Products products)
-        {
-            db.Products.Remove(products);
-            db.SaveChanges();
-        }
+        
+        
         [HttpGet]
         public ActionResult CreateNewProduct()
         {
@@ -108,7 +98,7 @@ namespace SoftwarePr.Controllers
         {
             file = SaveFilePath(file);
             products = SaveProductPictureData(products, file);
-            AddProductsData(products);
+            Data.AddProductsData(products);
         }
         public Products SaveProductPictureData(Products products, HttpPostedFileBase file)
         {
@@ -124,11 +114,7 @@ namespace SoftwarePr.Controllers
             file.SaveAs(path);
             return file;
         }
-        public void AddProductsData(Products products)
-        {
-            db.Products.Add(products);
-            db.SaveChanges();
-        }
+        
         [HttpGet]
         public ActionResult EditProduct(int id)
         {
@@ -140,7 +126,7 @@ namespace SoftwarePr.Controllers
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
             {
-                Products products = FindProductId(id);
+                Products products = Data.FindProductId(id);
                 return ifProductNullorNot(products);
             }
             else
@@ -183,20 +169,16 @@ namespace SoftwarePr.Controllers
         {
             file = SaveFilePath(file);
             products = SaveProductPictureData(products, file);
-            ModifyProductsData(products);
+            Data.ModifyProductsData(products);
         }
 
-        public void ModifyProductsData(Products products)
-        {
-            db.Entry(products).State = EntityState.Modified;
-            db.SaveChanges();
-        }
+       
         public ActionResult ViewProductsAdmin()
         {
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
             {
-                var products = GetProducts();
+                var products = Data.GetProductsData();
                 return View(products);
             }
             else
@@ -224,19 +206,15 @@ namespace SoftwarePr.Controllers
             var userInCookie = Request.Cookies["UserInfo"];
             if (userInCookie != null)
             {
-
-                return FindProductId(Id);
+                var productData = Data.FindProductNullableId(Id);
+                return View(productData);
             }
             else
             {
                 return RedirectToAction("Login", "User");
             }
         }
-        public ActionResult FindProductId(int? Id)
-        {
-            Products products = db.Products.Find(Id);
-            return View(products);
-        }
+       
 
 
         [HttpPost]
@@ -246,7 +224,7 @@ namespace SoftwarePr.Controllers
             var userInCookie = Request.Cookies["UserInfo"];
             if (userInCookie != null)
             {
-                Products products = db.Products.Find(Id);
+                Products products = Data.FindProductId(Id);
                 Cart cart = new Cart();
                 cart = AddProductDataToCart(Id, products, cart, number);
                 if (TempData["cart"] == null)
@@ -369,8 +347,8 @@ namespace SoftwarePr.Controllers
                 odr.Qty = item.qty;
                 odr.Unit_Price = (int)item.price;
                 odr.Order_Bill = item.bill;
-                db.orders.Add(odr);
-                db.SaveChanges();
+                Data.SaveOrder(odr);
+                
             }
         }
         public InvoiceModel AddDataToInvoiceModel(int iduser, InvoiceModel invoice)
@@ -379,8 +357,7 @@ namespace SoftwarePr.Controllers
             invoice.FKUserID = iduser;
             invoice.DateInvoice = System.DateTime.Now;
             invoice.Total_Bill = (float)TempData["Total"];
-            db.invoiceModel.Add(invoice);
-            db.SaveChanges();
+            Data.SaveInvoice(invoice);
             return invoice;
         }
         public ActionResult Remove(int? id)
@@ -401,5 +378,7 @@ namespace SoftwarePr.Controllers
             TempData["total"] = TotalBill;
             return RedirectToAction("Checkout");
         }
+
+        
     }
 }
