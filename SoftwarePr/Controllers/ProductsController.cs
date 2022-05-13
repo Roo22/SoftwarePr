@@ -270,7 +270,7 @@ namespace SoftwarePr.Controllers
         public Cart AddProductDataToCart(int Id, Products products, Cart cart, string number)
         {
 
-            cart.productId = products.id;
+            cart.productId = products.ProductId;
             cart.productName = products.ProductName;
             cart.productPic = products.ProductPicture;
             cart.price = products.ProductPrice;
@@ -342,11 +342,11 @@ namespace SoftwarePr.Controllers
             {
                 Order odr = new Order();
                 odr.FkProdId = item.productId;
-                odr.FkInvoiceID = invoice.ID;
-                odr.Order_Date = System.DateTime.Now;
+                odr.FkInvoiceID = invoice.InvoiceId;
+                odr.OrderDate = System.DateTime.Now;
                 odr.Qty = item.qty;
-                odr.Unit_Price = (int)item.price;
-                odr.Order_Bill = item.bill;
+                odr.UnitPrice = (int)item.price;
+                odr.OrderBill = item.bill;
                 Data.SaveOrder(odr);
                 
             }
@@ -356,7 +356,7 @@ namespace SoftwarePr.Controllers
 
             invoice.FKUserID = iduser;
             invoice.DateInvoice = System.DateTime.Now;
-            invoice.Total_Bill = (float)TempData["Total"];
+            invoice.TotalBill = (float)TempData["Total"];
             Data.SaveInvoice(invoice);
             return invoice;
         }

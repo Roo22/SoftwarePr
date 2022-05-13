@@ -83,7 +83,7 @@ namespace SoftwarePr.Controllers
         public void CreateCookie(List<AdminLogin> data)
         {
             HttpCookie cookie = new HttpCookie("AdminInfo");
-            cookie.Values["idAdmin"] = Convert.ToString(data.FirstOrDefault().adminid);
+            cookie.Values["idAdmin"] = Convert.ToString(data.FirstOrDefault().AdminId);
             cookie.Values["Email"] = Convert.ToString(data.FirstOrDefault().Email);
             cookie.Expires = DateTime.Now.AddMonths(1);
             Response.Cookies.Add(cookie);
@@ -122,7 +122,7 @@ namespace SoftwarePr.Controllers
             List<Order> order = Data.GetOrderData();
             foreach (var item in order)
             {
-                sum += item.Order_Bill;
+                sum += item.OrderBill;
             }
             TempData["OrderTotal"] = sum;
             return order;
@@ -153,7 +153,7 @@ namespace SoftwarePr.Controllers
             List<InvoiceModel> invoice = Data.GetInvoiceData();
             foreach (var item in invoice)
             {
-                sum += item.Total_Bill;
+                sum += item.TotalBill;
 
 
             }

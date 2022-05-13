@@ -51,7 +51,7 @@ namespace SoftwarePr.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Signup(SignupLogin signup)
+        public ActionResult Signup(UserLoginSignUp signup)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace SoftwarePr.Controllers
             return View();
         }
        
-        public ActionResult IfModelValid(SignupLogin signup)
+        public ActionResult IfModelValid(UserLoginSignUp signup)
         {
             var isEmailAlreadyExists = Data.GetUserEmail(signup);
             if (isEmailAlreadyExists)
@@ -86,13 +86,13 @@ namespace SoftwarePr.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(SignupLogin model)
+        public ActionResult Login(UserLoginSignUp model)
         {
             var data = Data.GetUserData(model);
             return CheckData(data);
         }
        
-        public ActionResult CheckData(IEnumerable<SignupLogin> data)
+        public ActionResult CheckData(IEnumerable<UserLoginSignUp> data)
         {
             if (data.Count() > 0)
             {
@@ -105,11 +105,11 @@ namespace SoftwarePr.Controllers
                 return RedirectToAction("Login");
             }
         }
-        public void CreateCookie(IEnumerable<SignupLogin> data)
+        public void CreateCookie(IEnumerable<UserLoginSignUp> data)
         {
-            Session["uid"] = data.FirstOrDefault().userid;
+            Session["uid"] = data.FirstOrDefault().userId;
             HttpCookie cookie = new HttpCookie("UserInfo");
-            cookie.Values["idUser"] = Convert.ToString(data.FirstOrDefault().userid);
+            cookie.Values["idUser"] = Convert.ToString(data.FirstOrDefault().userId);
             cookie.Values["FullName"] = Convert.ToString(data.FirstOrDefault().Name);
             cookie.Values["Email"] = Convert.ToString(data.FirstOrDefault().Email);
             cookie.Expires = DateTime.Now.AddMonths(1);

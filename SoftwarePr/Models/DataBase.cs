@@ -34,12 +34,12 @@ namespace SoftwarePr.Models
             var contactsData = db.contactModels.ToList<ContactModel>();
             return contactsData;
         }
-        public IEnumerable<SignupLogin> GetUserData(SignupLogin model)
+        public IEnumerable<UserLoginSignUp> GetUserData(UserLoginSignUp model)
         {
             var UserData = db.SignupLogin.Where(s => s.Email.Equals(model.Email) && s.Password.Equals(model.Password)).ToList();
             return UserData;
         }
-        public bool GetUserEmail(SignupLogin signup)
+        public bool GetUserEmail(UserLoginSignUp signup)
         {
             var email = db.SignupLogin.Any(x => x.Email == signup.Email);
             return email;
@@ -64,7 +64,7 @@ namespace SoftwarePr.Models
             db.contactModels.Add(contact);
             db.SaveChanges();
         }
-        public void SaveSignUpData(SignupLogin signup)
+        public void SaveSignUpData(UserLoginSignUp signup)
         {
             db.SignupLogin.Add(signup);
             db.SaveChanges();

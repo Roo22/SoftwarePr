@@ -9,7 +9,7 @@ namespace SoftwarePr.Models
     public class Products
     {
         [Key]
-        public int id { get; set; }
+        public int ProductId { get; set; }
         [Display(Name = "Product Name")]
         public string ProductName { get; set; }
         public int ProductPrice { get; set; }
