@@ -3,7 +3,7 @@ namespace SoftwareProject1.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class start : DbMigration
+    public partial class SaveChanges : DbMigration
     {
         public override void Up()
         {
@@ -11,11 +11,11 @@ namespace SoftwareProject1.Migrations
                 "dbo.AdminLogins",
                 c => new
                     {
-                        adminid = c.Int(nullable: false, identity: true),
+                        AdminId = c.Int(nullable: false, identity: true),
                         Email = c.String(nullable: false, maxLength: 50),
                         Password = c.String(nullable: false, maxLength: 100),
                     })
-                .PrimaryKey(t => t.adminid);
+                .PrimaryKey(t => t.AdminId);
             
             CreateTable(
                 "dbo.BlogModels",
@@ -45,26 +45,26 @@ namespace SoftwareProject1.Migrations
                 "dbo.InvoiceModels",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        InvoiceId = c.Int(nullable: false, identity: true),
                         DateInvoice = c.DateTime(),
-                        Total_Bill = c.Single(nullable: false),
+                        TotalBill = c.Single(nullable: false),
                         FKUserID = c.Int(),
                     })
-                .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.SignupLogins", t => t.FKUserID)
+                .PrimaryKey(t => t.InvoiceId)
+                .ForeignKey("dbo.UserLoginSignUps", t => t.FKUserID)
                 .Index(t => t.FKUserID);
             
             CreateTable(
-                "dbo.SignupLogins",
+                "dbo.UserLoginSignUps",
                 c => new
                     {
-                        userid = c.Int(nullable: false, identity: true),
+                        userId = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 50),
                         Email = c.String(nullable: false, maxLength: 50),
                         Password = c.String(nullable: false, maxLength: 100),
                         ConfirmPassword = c.String(nullable: false, maxLength: 50),
                     })
-                .PrimaryKey(t => t.userid);
+                .PrimaryKey(t => t.userId);
             
             CreateTable(
                 "dbo.Orders",
@@ -72,9 +72,9 @@ namespace SoftwareProject1.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Qty = c.Int(nullable: false),
-                        Unit_Price = c.Int(nullable: false),
-                        Order_Bill = c.Single(nullable: false),
-                        Order_Date = c.DateTime(),
+                        UnitPrice = c.Int(nullable: false),
+                        OrderBill = c.Single(nullable: false),
+                        OrderDate = c.DateTime(),
                         FkProdId = c.Int(),
                         FkInvoiceID = c.Int(),
                     })
@@ -88,12 +88,12 @@ namespace SoftwareProject1.Migrations
                 "dbo.Products",
                 c => new
                     {
-                        id = c.Int(nullable: false, identity: true),
+                        ProductId = c.Int(nullable: false, identity: true),
                         ProductName = c.String(),
                         ProductPrice = c.Int(nullable: false),
                         ProductPicture = c.String(),
                     })
-                .PrimaryKey(t => t.id);
+                .PrimaryKey(t => t.ProductId);
             
             CreateTable(
                 "dbo.AspNetRoles",
@@ -173,7 +173,7 @@ namespace SoftwareProject1.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Orders", "FkProdId", "dbo.Products");
             DropForeignKey("dbo.Orders", "FkInvoiceID", "dbo.InvoiceModels");
-            DropForeignKey("dbo.InvoiceModels", "FKUserID", "dbo.SignupLogins");
+            DropForeignKey("dbo.InvoiceModels", "FKUserID", "dbo.UserLoginSignUps");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
@@ -190,7 +190,7 @@ namespace SoftwareProject1.Migrations
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Products");
             DropTable("dbo.Orders");
-            DropTable("dbo.SignupLogins");
+            DropTable("dbo.UserLoginSignUps");
             DropTable("dbo.InvoiceModels");
             DropTable("dbo.ContactModels");
             DropTable("dbo.BlogModels");

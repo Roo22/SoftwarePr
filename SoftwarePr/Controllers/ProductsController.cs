@@ -126,6 +126,7 @@ namespace SoftwarePr.Controllers
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
             {
+                
                 Products products = Data.FindProductId(id);
                 return ifProductNullorNot(products);
             }

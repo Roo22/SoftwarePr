@@ -177,33 +177,9 @@
     </Compile>
     <Compile Include="InterFaces\ILogOut.cs" />
     <Compile Include="InterFaces\IRedirectControllers.cs" />
-    <Compile Include="Migrations\202011200931210_ProductTable.cs" />
-    <Compile Include="Migrations\202011200931210_ProductTable.Designer.cs">
-      <DependentUpon>202011200931210_ProductTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202011241103516_CreateUSerTable.cs" />
-    <Compile Include="Migrations\202011241103516_CreateUSerTable.Designer.cs">
-      <DependentUpon>202011241103516_CreateUSerTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202012061152256_AdminTable.cs" />
-    <Compile Include="Migrations\202012061152256_AdminTable.Designer.cs">
-      <DependentUpon>202012061152256_AdminTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202012121238292_InvoiceOrderMg.cs" />
-    <Compile Include="Migrations\202012121238292_InvoiceOrderMg.Designer.cs">
-      <DependentUpon>202012121238292_InvoiceOrderMg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202012290620246_ContactTable.cs" />
-    <Compile Include="Migrations\202012290620246_ContactTable.Designer.cs">
-      <DependentUpon>202012290620246_ContactTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202012290946031_BlogTable.cs" />
-    <Compile Include="Migrations\202012290946031_BlogTable.Designer.cs">
-      <DependentUpon>202012290946031_BlogTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202205102139209_start.cs" />
-    <Compile Include="Migrations\202205102139209_start.Designer.cs">
-      <DependentUpon>202205102139209_start.cs</DependentUpon>
+    <Compile Include="Migrations\202205131749419_SaveChanges.cs" />
+    <Compile Include="Migrations\202205131749419_SaveChanges.Designer.cs">
+      <DependentUpon>202205131749419_SaveChanges.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminLogin.cs" />
@@ -1065,26 +1041,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202011200931210_ProductTable.resx">
-      <DependentUpon>202011200931210_ProductTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202011241103516_CreateUSerTable.resx">
-      <DependentUpon>202011241103516_CreateUSerTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012061152256_AdminTable.resx">
-      <DependentUpon>202012061152256_AdminTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012121238292_InvoiceOrderMg.resx">
-      <DependentUpon>202012121238292_InvoiceOrderMg.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012290620246_ContactTable.resx">
-      <DependentUpon>202012290620246_ContactTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012290946031_BlogTable.resx">
-      <DependentUpon>202012290946031_BlogTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205102139209_start.resx">
-      <DependentUpon>202205102139209_start.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202205131749419_SaveChanges.resx">
+      <DependentUpon>202205131749419_SaveChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

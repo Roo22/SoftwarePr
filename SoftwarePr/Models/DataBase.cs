@@ -56,7 +56,7 @@ namespace SoftwarePr.Models
         }
         public Products FindProductNullableId(int? Id)
         {
-            Products products = db.Products.Find(Id);
+            Products products = db.Products.Single(item => item.ProductId == Id);
             return products;
         }
         public void SaveContactModelData(ContactModel contact)
@@ -76,7 +76,7 @@ namespace SoftwarePr.Models
         }
         public Products FindProductId(int id)
         {
-            Products products = db.Products.Find(id);
+            Products products = db.Products.Single(item => item.ProductId == id);
             return products;
         }
         public void SaveOrder(Order odr)
