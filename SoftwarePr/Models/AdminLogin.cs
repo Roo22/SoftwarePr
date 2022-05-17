@@ -9,7 +9,7 @@ namespace SoftwarePr.Models
     public class AdminLogin
     {
         [Key]
-        public int adminid { get; set; }
+        public int AdminId { get; set; }
         [StringLength(50)]
         [EmailAddress]
         [Required(ErrorMessage = "Email Required")]

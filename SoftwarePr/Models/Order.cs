@@ -12,9 +12,9 @@ namespace SoftwarePr.Models
         [Key]
         public int Id { get; set; }
         public int Qty { get; set; }
-        public int Unit_Price { get; set; }
-        public float Order_Bill { get; set; }
-        public DateTime? Order_Date { get; set; }
+        public int UnitPrice { get; set; }
+        public float OrderBill { get; set; }
+        public DateTime? OrderDate { get; set; }
 
         public int? FkProdId { get; set; }
         [ForeignKey("FkProdId")]

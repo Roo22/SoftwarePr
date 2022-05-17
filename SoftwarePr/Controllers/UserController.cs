@@ -1,4 +1,5 @@
-﻿using SoftwarePr.Models;
+﻿using SoftwarePr.InterFaces;
+using SoftwarePr.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,10 @@ using System.Web.Mvc;
 
 namespace SoftwarePr.Controllers
 {
-    public class UserController : Controller
+    public class UserController : Controller,IRedirectControllers, IRedirectUserControllers, ILogOut
     {
         ApplicationDbContext db = new ApplicationDbContext();
+        DataBase Data = new DataBase();
 
         // GET: User
         public ActionResult Index()
@@ -49,7 +51,7 @@ namespace SoftwarePr.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Signup(SignupLogin signup)
+        public ActionResult Signup(UserLoginSignUp signup)
         {
             if (ModelState.IsValid)
             {
@@ -62,21 +64,17 @@ namespace SoftwarePr.Controllers
             ViewBag.Message = "Email Already Registered. Please Try Again With Another Email";
             return View();
         }
-        public void SaveSignUpData(SignupLogin signup)
+       
+        public ActionResult IfModelValid(UserLoginSignUp signup)
         {
-            db.SignupLogin.Add(signup);
-            db.SaveChanges();
-        }
-        public ActionResult IfModelValid(SignupLogin signup)
-        {
-            var isEmailAlreadyExists = db.SignupLogin.Any(x => x.Email == signup.Email);
+            var isEmailAlreadyExists = Data.GetUserEmail(signup);
             if (isEmailAlreadyExists)
             {
                 return IfEmailExists();
             }
             else
             {
-                SaveSignUpData(signup);
+                Data.SaveSignUpData(signup);
                 return RedirectToAction("Index", "Products");
             }
         }
@@ -88,17 +86,13 @@ namespace SoftwarePr.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(SignupLogin model)
+        public ActionResult Login(UserLoginSignUp model)
         {
-            var data = GetUserData(model);
+            var data = Data.GetUserData(model);
             return CheckData(data);
         }
-        public IEnumerable<SignupLogin> GetUserData(SignupLogin model)
-        {
-            var data = db.SignupLogin.Where(s => s.Email.Equals(model.Email) && s.Password.Equals(model.Password)).ToList();
-            return data;
-        }
-        public ActionResult CheckData(IEnumerable<SignupLogin> data)
+       
+        public ActionResult CheckData(IEnumerable<UserLoginSignUp> data)
         {
             if (data.Count() > 0)
             {
@@ -111,11 +105,11 @@ namespace SoftwarePr.Controllers
                 return RedirectToAction("Login");
             }
         }
-        public void CreateCookie(IEnumerable<SignupLogin> data)
+        public void CreateCookie(IEnumerable<UserLoginSignUp> data)
         {
-            Session["uid"] = data.FirstOrDefault().userid;
+            Session["uid"] = data.FirstOrDefault().userId;
             HttpCookie cookie = new HttpCookie("UserInfo");
-            cookie.Values["idUser"] = Convert.ToString(data.FirstOrDefault().userid);
+            cookie.Values["idUser"] = Convert.ToString(data.FirstOrDefault().userId);
             cookie.Values["FullName"] = Convert.ToString(data.FirstOrDefault().Name);
             cookie.Values["Email"] = Convert.ToString(data.FirstOrDefault().Email);
             cookie.Expires = DateTime.Now.AddMonths(1);
@@ -134,6 +128,6 @@ namespace SoftwarePr.Controllers
             return RedirectToAction("Login");
         }
 
-
+      
     }
 }

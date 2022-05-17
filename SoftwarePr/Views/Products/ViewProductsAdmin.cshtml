@@ -47,9 +47,9 @@
                                     <td><img class="product__img img-fluid" sty" width="200" height="200" src="~/@Html.DisplayFor(modelItem => item.ProductPicture)" alt=""></td>
 
                                     <td>
-                                        <button class="btn btn-block btn-success">@Html.ActionLink("Edit", "EditProduct", new { id = item.id }, htmlAttributes: new { @class = "clbtn" })</button>
-                                        <button class="btn btn-block btn-info">@Html.ActionLink("Details", "Details", new { id = item.id }, htmlAttributes: new { @class = "clbtn" })</button>
-                                        <button class="btn btn-block btn-danger">@Html.ActionLink("Delete", "Delete", new { id = item.id })</button>
+                                        <button class="btn btn-block btn-success">@Html.ActionLink("Edit", "EditProduct", new { id = item.ProductId }, htmlAttributes: new { @class = "clbtn" })</button>
+                                        <button class="btn btn-block btn-info">@Html.ActionLink("Details", "Details", new { id = item.ProductId }, htmlAttributes: new { @class = "clbtn" })</button>
+                                        <button class="btn btn-block btn-danger">@Html.ActionLink("Delete", "Delete", new { id = item.ProductId })</button>
 
                                     </td>
                                 </tr>

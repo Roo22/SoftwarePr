@@ -6,10 +6,10 @@ using System.Web;
 
 namespace SoftwarePr.Models
 {
-    public class SignupLogin
+    public class UserLoginSignUp
     {
         [Key]
-        public int userid { get; set; }
+        public int userId { get; set; }
         [StringLength(50)]
         [Required(ErrorMessage = "Name Required")]
         public string Name { get; set; }

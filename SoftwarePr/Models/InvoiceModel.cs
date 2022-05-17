@@ -10,14 +10,14 @@ namespace SoftwarePr.Models
     public class InvoiceModel
     {
         [Key]
-        public int ID { get; set; }
+        public int InvoiceId { get; set; }
 
         public DateTime? DateInvoice { get; set; }
-        public float Total_Bill { get; set; }
+        public float TotalBill { get; set; }
 
         public int? FKUserID { get; set; }
         [ForeignKey("FKUserID")]
-        public virtual SignupLogin user { get; set; }
+        public virtual UserLoginSignUp user { get; set; }
 
 
     }

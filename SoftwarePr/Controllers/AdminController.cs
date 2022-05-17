@@ -1,4 +1,5 @@
-﻿using SoftwarePr.Models;
+﻿using SoftwarePr.InterFaces;
+using SoftwarePr.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +8,13 @@ using System.Web.Mvc;
 
 namespace SoftwarePr.Controllers
 {
-    public class AdminController : Controller
+    public class AdminController : Controller, IRedirectControllers, IRedirectAdminControllers, ILogOut
     {
         ApplicationDbContext db = new ApplicationDbContext();
+        DataBase Data = new DataBase();
         // GET: Admin
         public ActionResult Index()
         {
-
             return RedirectingIndex();
         }
         public ActionResult RedirectingIndex()
@@ -62,13 +63,9 @@ namespace SoftwarePr.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LoginAdmin(AdminLogin model)
         {
-            var data = GetAdminData(model);
+            //var data = GetAdminData(model);
+            var data = Data.GetAdminData(model);
             return CheckData(data);
-        }
-        public List<AdminLogin> GetAdminData(AdminLogin model)
-        {
-            var data = db.adminLogin.Where(s => s.Email.Equals(model.Email) && s.Password.Equals(model.Password)).ToList();
-            return data;
         }
         public ActionResult CheckData(List<AdminLogin> data)
         {
@@ -86,12 +83,12 @@ namespace SoftwarePr.Controllers
         public void CreateCookie(List<AdminLogin> data)
         {
             HttpCookie cookie = new HttpCookie("AdminInfo");
-            cookie.Values["idAdmin"] = Convert.ToString(data.FirstOrDefault().adminid);
+            cookie.Values["idAdmin"] = Convert.ToString(data.FirstOrDefault().AdminId);
             cookie.Values["Email"] = Convert.ToString(data.FirstOrDefault().Email);
             cookie.Expires = DateTime.Now.AddMonths(1);
             Response.Cookies.Add(cookie);
         }
-        public ActionResult LogoutAdmin()
+        public ActionResult Logout()
         {
             if (this.ControllerContext.HttpContext.Request.Cookies.AllKeys.Contains("AdminInfo"))
             {
@@ -122,10 +119,10 @@ namespace SoftwarePr.Controllers
         public List<Order> GetOrderTotal()
         {
             float sum = 0;
-            List<Order> order = db.orders.ToList<Order>();
+            List<Order> order = Data.GetOrderData();
             foreach (var item in order)
             {
-                sum += item.Order_Bill;
+                sum += item.OrderBill;
             }
             TempData["OrderTotal"] = sum;
             return order;
@@ -153,10 +150,10 @@ namespace SoftwarePr.Controllers
         public List<InvoiceModel> GetTotalBills()
         {
             float sum = 0;
-            List<InvoiceModel> invoice = db.invoiceModel.ToList<InvoiceModel>();
+            List<InvoiceModel> invoice = Data.GetInvoiceData();
             foreach (var item in invoice)
             {
-                sum += item.Total_Bill;
+                sum += item.TotalBill;
 
 
             }

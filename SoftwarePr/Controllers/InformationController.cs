@@ -1,4 +1,5 @@
-﻿using SoftwarePr.Models;
+﻿using SoftwarePr.InterFaces;
+using SoftwarePr.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,10 @@ using System.Web.Mvc;
 
 namespace SoftwarePr.Controllers
 {
-    public class InformationController : Controller
+    public class InformationController : Controller, IRedirectControllers
     {
         ApplicationDbContext db = new ApplicationDbContext();
+        DataBase Data = new DataBase();
         // GET: Information
         public ActionResult ContactUs()
         {
@@ -19,20 +21,16 @@ namespace SoftwarePr.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ContactUs(ContactModel contact)
         {
-            SaveContactModelData(contact);
+            Data.SaveContactModelData(contact);
             return View();
         }
-        public void SaveContactModelData(ContactModel contact)
-        {
-            db.contactModels.Add(contact);
-            db.SaveChanges();
-        }
+        
         public ActionResult MessageList()
         {
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
             {
-                var contacts = GetContacts();
+                var contacts = Data.GetContactsData();
                 return View(contacts);
 
             }
@@ -64,11 +62,7 @@ namespace SoftwarePr.Controllers
 
             return View();
         }
-        public IEnumerable<ContactModel> GetContacts()
-        {
-            var contacts = db.contactModels.ToList<ContactModel>();
-            return contacts;
-        }
+        
     }
 
 
